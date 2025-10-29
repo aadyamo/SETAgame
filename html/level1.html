@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Orientation Mission</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="..\css\style.css">
+</head>
+<body class="game-page mission-orientation">
+    <div class="noise-overlay" aria-hidden="true"></div>
+    <div class="binary-overlay" aria-hidden="true"></div>
+
+    <header class="site-header">
+        <div class="brand">
+            <div class="brand-icon" aria-hidden="true">
+                <img src="..\pixil-frame-0.png" alt="CyberQuest shield logo">
+            </div>
+            <span class="brand-name">CyberQuest Atlas</span>
+        </div>
+        <nav class="actions">
+            <a class="button ghost" href="map.html">Back to Atlas</a>
+        </nav>
+    </header>
+
+    <main class="game-main" role="main">
+        <section class="mission-shell">
+            <header class="mission-briefing">
+                <h1>Level 1 &mdash; Cyber Orientation</h1>
+                <p>Welcome to the academy. Test your instincts through rapid-response orientation drills and build your threat awareness baseline.</p>
+            </header>
+
+            <div class="mission-console">
+                <div class="status-bar" aria-live="polite">
+                    <span id="orientation-progress">Progress: 0/0</span>
+                    <span id="orientation-score">Score: 0</span>
+                </div>
+
+                <div id="orientation-intro" class="mission-panel">
+                    <p class="panel-copy">
+                        You will assess five quick scenarios. Select the best action to build your instincts. Every correct answer boosts your score. Three strikes ends the simulation.
+                    </p>
+                    <button id="orientation-start" class="button primary">Start Simulation</button>
+                </div>
+
+                <div id="orientation-question" class="mission-panel hidden" aria-live="polite"></div>
+
+                <div id="orientation-outcome" class="mission-panel hidden" aria-live="polite">
+                    <h2>Simulation Complete</h2>
+                    <p id="orientation-summary"></p>
+                    <button class="button ghost" id="orientation-restart">Run Again</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <small>2024 CyberQuest Atlas. All rights reserved.</small>
+    </footer>
+
+    <script defer src="..\js\level1.js"></script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phishing Defense Simulator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="..\css\style.css">
+</head>
+<body class="game-page mission-phishing">
+    <div class="noise-overlay" aria-hidden="true"></div>
+    <div class="binary-overlay" aria-hidden="true"></div>
+
+    <header class="site-header">
+        <div class="brand">
+            <div class="brand-icon" aria-hidden="true">
+                <img src="..\pixil-frame-0.png" alt="CyberQuest shield logo">
+            </div>
+            <span class="brand-name">CyberQuest Atlas</span>
+        </div>
+        <nav class="actions">
+            <a class="button ghost" href="map.html">Back to Atlas</a>
+        </nav>
+    </header>
+
+    <main class="game-main" role="main">
+        <section class="mission-shell">
+            <header class="mission-briefing">
+                <h1>Level 2 &mdash; Phishing Defense</h1>
+                <p>Intercept simulated emails rushing toward your inbox. Decide whether to quarantine or deliver each message before the timer drains.</p>
+            </header>
+
+            <div class="mission-console">
+                <div class="status-bar" aria-live="polite">
+                    <span id="phishing-progress">Progress: 0/0</span>
+                    <span id="phishing-score">Score: 0</span>
+                    <span id="phishing-strike">Strikes: 0</span>
+                </div>
+
+                <div id="phishing-intro" class="mission-panel">
+                    <p class="panel-copy">
+                        Review each message carefully&mdash;hover over sender details, scan links, and trust your instincts. Flag true phishing attempts and let legitimate traffic pass. Three misses will shut the mail gateway.
+                    </p>
+                    <button id="phishing-start" class="button primary">Begin Scan</button>
+                </div>
+
+                <div id="phishing-game" class="mission-panel hidden" aria-live="polite"></div>
+
+                <div id="phishing-outcome" class="mission-panel hidden" aria-live="polite">
+                    <h2>Mail Gateway Report</h2>
+                    <p id="phishing-summary"></p>
+                    <button class="button ghost" id="phishing-restart">Run New Wave</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <small>2024 CyberQuest Atlas. All rights reserved.</small>
+    </footer>
+
+    <script defer src="..\js\level2.js"></script>
+</body>
+</html>

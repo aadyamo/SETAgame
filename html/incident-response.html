@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incident Response Command</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="..\css\style.css">
+</head>
+<body class="game-page mission-incident">
+    <div class="noise-overlay" aria-hidden="true"></div>
+    <div class="binary-overlay" aria-hidden="true"></div>
+
+    <header class="site-header">
+        <div class="brand">
+            <div class="brand-icon" aria-hidden="true">
+                <img src="..\pixil-frame-0.png" alt="CyberQuest shield logo">
+            </div>
+            <span class="brand-name">CyberQuest Atlas</span>
+        </div>
+        <nav class="actions">
+            <a class="button ghost" href="map.html">Back to Atlas</a>
+        </nav>
+    </header>
+
+    <main class="game-main" role="main">
+        <section class="mission-shell">
+            <header class="mission-briefing">
+                <h1>Boss Mission &mdash; Incident Response Command</h1>
+                <p>Lead the command center through a live compromise. Select the correct play at each stage to neutralize the threat and restore operations.</p>
+            </header>
+
+            <div class="mission-console">
+                <div class="status-bar" aria-live="polite">
+                    <span id="incident-stage">Stage: 0/0</span>
+                    <span id="incident-score">Response Quality: 100%</span>
+                    <span id="incident-misstep">Missteps: 0</span>
+                </div>
+
+                <div id="incident-intro" class="mission-panel">
+                    <p class="panel-copy">
+                        This simulation follows the NIST incident response lifecycle. Make decisive choices. Wrong moves cost time and degrade response quality.
+                    </p>
+                    <button id="incident-start" class="button primary">Enter Command Center</button>
+                </div>
+
+                <div id="incident-game" class="mission-panel hidden" aria-live="polite"></div>
+
+                <div id="incident-outcome" class="mission-panel hidden" aria-live="polite">
+                    <h2>After Action Report</h2>
+                    <p id="incident-summary"></p>
+                    <button class="button ghost" id="incident-restart">Re-run Simulation</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <small>2024 CyberQuest Atlas. All rights reserved.</small>
+    </footer>
+
+    <script defer src="..\js\incident-response.js"></script>
+</body>
+</html>

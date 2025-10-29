@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Guardian</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="..\css\style.css">
+</head>
+<body class="game-page mission-network">
+    <div class="noise-overlay" aria-hidden="true"></div>
+    <div class="binary-overlay" aria-hidden="true"></div>
+
+    <header class="site-header">
+        <div class="brand">
+            <div class="brand-icon" aria-hidden="true">
+                <img src="..\pixil-frame-0.png" alt="CyberQuest shield logo">
+            </div>
+            <span class="brand-name">CyberQuest Atlas</span>
+        </div>
+        <nav class="actions">
+            <a class="button ghost" href="map.html">Back to Atlas</a>
+        </nav>
+    </header>
+
+    <main class="game-main" role="main">
+        <section class="mission-shell">
+            <header class="mission-briefing">
+                <h1>Level 3 &mdash; Network Guardian</h1>
+                <p>Hold the perimeter. Analyze each connection attempt and decide whether to allow or block it to keep the enclave secure.</p>
+            </header>
+
+            <div class="mission-console">
+                <div class="status-bar" aria-live="polite">
+                    <span id="guardian-wave">Wave: 0/0</span>
+                    <span id="guardian-integrity">Shield Integrity: 100%</span>
+                    <span id="guardian-breach">Breaches: 0</span>
+                </div>
+
+                <div id="guardian-intro" class="mission-panel">
+                    <p class="panel-copy">
+                        Inspect telemetry, ports, and behavior cues to judge every packet. Wrong calls erode shield integrity; three breaches collapse the boundary. Stay sharp.
+                    </p>
+                    <button id="guardian-start" class="button primary">Initialize Firewall</button>
+                </div>
+
+                <div id="guardian-game" class="mission-panel hidden" aria-live="polite"></div>
+
+                <div id="guardian-outcome" class="mission-panel hidden" aria-live="polite">
+                    <h2>Perimeter Status</h2>
+                    <p id="guardian-summary"></p>
+                    <button class="button ghost" id="guardian-restart">Reset Simulation</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <small>2024 CyberQuest Atlas. All rights reserved.</small>
+    </footer>
+
+    <script defer src="..\js\level3.js"></script>
+</body>
+</html>

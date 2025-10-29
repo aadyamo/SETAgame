@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberQuest Atlas � Training Map</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="..\css\style.css">
+</head>
+<body class="map-page">
+    <div class="noise-overlay" aria-hidden="true"></div>
+    <div class="binary-overlay" aria-hidden="true"></div>
+
+    <header class="site-header">
+        <div class="brand">
+            <div class="brand-icon" aria-hidden="true">
+                <img src="..\pixil-frame-0.png" alt="CyberQuest shield logo">
+            </div>
+            <span class="brand-name">CyberQuest Atlas</span>
+        </div>
+        <nav class="actions">
+            <a class="button ghost" href="index.html">Return Home</a>
+        </nav>
+    </header>
+
+    <main class="map-main" role="main">
+        <section class="map-hero">
+            <h1>Training Atlas</h1>
+            <p>Select a mission node to begin a level or launch a mini-game. Complete each sector to master your cybersecurity skills.</p>
+        </section>
+
+        <section class="map-board" aria-label="Training map">
+            <div class="map-grid">
+                <div class="map-path path-1"></div>
+                <div class="map-path path-2"></div>
+                <div class="map-path path-3"></div>
+                <div class="map-path path-4"></div>
+
+                <a class="map-node start" href="level1.html">
+                    <span class="node-number">Level 1</span>
+                    <span class="node-title">Cyber Orientation</span>
+                    <span class="node-desc">Start here to learn the basics.</span>
+                </a>
+
+                <a class="map-node" href="level2.html" style="--top: 34%; --left: 28%;">
+                    <span class="node-number">Level 2</span>
+                    <span class="node-title">Phishing Defense</span>
+                    <span class="node-desc">Identify suspicious messages.</span>
+                </a>
+
+                <a class="map-node" href="password-forge.html" style="--top: 18%; --left: 56%;">
+                    <span class="node-number">Mini Game</span>
+                    <span class="node-title">Password Forge</span>
+                    <span class="node-desc">Build resilient passphrases.</span>
+                </a>
+
+                <a class="map-node" href="level3.html" style="--top: 58%; --left: 54%;">
+                    <span class="node-number">Level 3</span>
+                    <span class="node-title">Network Guardian</span>
+                    <span class="node-desc">Secure the perimeter defenses.</span>
+                </a>
+
+                <a class="map-node boss" href="incident-response.html" style="--top: 44%; --left: 78%;">
+                    <span class="node-number">Boss</span>
+                    <span class="node-title">Incident Response</span>
+                    <span class="node-desc">Contain and eradicate threats.</span>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <small>2024 CyberQuest Atlas. All rights reserved.</small>
+    </footer>
+</body>
+</html>
