@@ -17,11 +17,13 @@
     const wordCountValue = document.getElementById("forge-word-count-value");
     const resultCode = document.getElementById("forge-result");
     const strengthLabel = document.getElementById("forge-strength-label");
-    const entropyLabel = document.getElementById("forge-entropy-label");
+    const timeLabel = document.getElementById("forge-time-label");
     const guidance = document.getElementById("forge-guidance");
     const meterFill = document.getElementById("forge-meter-fill");
     const generateButton = document.getElementById("forge-generate");
     const copyButton = document.getElementById("forge-copy");
+    const passwordInput = document.getElementById("forge-input");
+    const analyzeButton = document.getElementById("forge-analyze");
 
     wordCountSlider.addEventListener("input", () => {
         wordCountValue.textContent = wordCountSlider.value;
@@ -54,35 +56,203 @@
         }));
     }
 
-    function calculateEntropy(wordCount, hasUpper, hasNumbers, hasSymbols, leet) {
-        const wordSpace = Math.log2(words.adjectives.length + words.nouns.length + words.verbs.length);
-        let charSpace = wordSpace * wordCount;
+    function getPasswordCharacteristics(password) {
+        const hasLower = /[a-z]/.test(password);
+        const hasUpper = /[A-Z]/.test(password);
+        const hasNumber = /\d/.test(password);
+        const hasSymbol = /[^A-Za-z0-9]/.test(password);
+        const hasUnicode = /[^\x00-\x7F]/.test(password);
+        let charsetSize = 0;
+        if (hasLower) {
+            charsetSize += 26;
+        }
         if (hasUpper) {
-            charSpace += wordCount * 1.2;
+            charsetSize += 26;
         }
-        if (leet) {
-            charSpace += wordCount * 1.4;
+        if (hasNumber) {
+            charsetSize += 10;
         }
-        if (hasNumbers) {
-            charSpace += Math.log2(numbers.length);
+        if (hasSymbol) {
+            charsetSize += 33;
         }
-        if (hasSymbols) {
-            charSpace += Math.log2(symbols.length);
+        if (hasUnicode) {
+            charsetSize += 100;
         }
-        return Math.round(charSpace);
+        const isRepeated = password.length > 1 && /^(.)\1+$/.test(password);
+        const commonPattern = /(password|letmein|qwerty|welcome|admin|iloveyou|abc123|123456|654321|dragon)/i.test(password);
+        const hasSequence = hasSequentialRun(password, 3);
+        return {
+            length: password.length,
+            hasLower,
+            hasUpper,
+            hasNumber,
+            hasSymbol,
+            hasUnicode,
+            charsetSize,
+            uniqueSets: [hasLower, hasUpper, hasNumber, hasSymbol || hasUnicode].filter(Boolean).length,
+            isRepeated,
+            commonPattern,
+            hasSequence
+        };
     }
 
-    function evaluateStrength(entropy) {
-        if (entropy >= 70) {
-            return { score: 100, text: "Mission-grade! This passphrase withstands offline cracking for centuries." };
+    function hasSequentialRun(password, runLength) {
+        if (password.length < runLength) {
+            return false;
         }
-        if (entropy >= 55) {
-            return { score: 85, text: "Strong shield. Reinforce with unique digits or additional words for extra safety." };
+        for (let i = 0; i <= password.length - runLength; i += 1) {
+            let asc = true;
+            let desc = true;
+            for (let j = 1; j < runLength; j += 1) {
+                const prev = password.charCodeAt(i + j - 1);
+                const current = password.charCodeAt(i + j);
+                if (current !== prev + 1) {
+                    asc = false;
+                }
+                if (current !== prev - 1) {
+                    desc = false;
+                }
+            }
+            if (asc || desc) {
+                return true;
+            }
         }
-        if (entropy >= 40) {
-            return { score: 65, text: "Moderate strength. Consider toggling more mutations to evade brute-force attempts." };
+        return false;
+    }
+
+    function estimateCrackTime(length, charsetSize) {
+        if (!length) {
+            return { text: "--", seconds: 0 };
         }
-        return { score: 40, text: "Vulnerable. Increase word count and mix in symbols or digits." };
+        if (charsetSize <= 1) {
+            return { text: "Instantly (<1 microsecond)", seconds: 0.000001 };
+        }
+        const guessesPerSecond = 1e10;
+        const combosLog10 = length * Math.log10(charsetSize);
+        const secondsLog10 = combosLog10 - (Math.log10(guessesPerSecond) + Math.log10(2));
+        if (secondsLog10 < -6) {
+            return { text: "Instantly (<1 microsecond)", seconds: Math.pow(10, secondsLog10) };
+        }
+        const seconds = secondsLog10 > 308 ? Number.POSITIVE_INFINITY : Math.pow(10, secondsLog10);
+        return { text: formatDuration(seconds), seconds };
+    }
+
+    function formatDuration(seconds) {
+        if (!Number.isFinite(seconds)) {
+            return "Longer than the age of the universe";
+        }
+        if (seconds < 1e-6) {
+            return "<1 microsecond";
+        }
+        if (seconds < 1e-3) {
+            return (seconds * 1e6).toFixed(1) + " microseconds";
+        }
+        if (seconds < 1) {
+            return (seconds * 1000).toFixed(1) + " milliseconds";
+        }
+        const units = [
+            { label: "second", size: 1 },
+            { label: "minute", size: 60 },
+            { label: "hour", size: 3600 },
+            { label: "day", size: 86400 },
+            { label: "month", size: 2629800 },
+            { label: "year", size: 31557600 },
+            { label: "century", size: 3155760000 }
+        ];
+        for (let i = units.length - 1; i >= 0; i -= 1) {
+            const unit = units[i];
+            if (seconds >= unit.size) {
+                const value = seconds / unit.size;
+                if (unit.label === "century" && value >= 1000) {
+                    return "Millennia+";
+                }
+                const rounded = value >= 10 ? Math.round(value) : value.toFixed(1);
+                return rounded + " " + unit.label + (Number(rounded) !== 1 ? "s" : "");
+            }
+        }
+        return seconds.toFixed(0) + " seconds";
+    }
+
+    function evaluateStrength(password, entropy, characteristics) {
+        if (!password) {
+            return {
+                score: 0,
+                base: "Type a password above to see how strong it is.",
+                suggestions: []
+            };
+        }
+        let score = 35;
+        let base = "Very weak. Make it much longer and mix in different character types.";
+        if (entropy >= 100) {
+            score = 100;
+            base = "Excellent. This password would take far longer than a lifetime to crack.";
+        } else if (entropy >= 80) {
+            score = 90;
+            base = "Very strong. Keep it unique for every account.";
+        } else if (entropy >= 60) {
+            score = 75;
+            base = "Solid, but you can still improve it with extra length or variety.";
+        } else if (entropy >= 40) {
+            score = 55;
+            base = "Weak. Add more characters and vary the types you use.";
+        }
+        const suggestions = [];
+        if (characteristics.length < 12) {
+            suggestions.push("Make it at least 12 characters long.");
+        }
+        if (characteristics.uniqueSets < 3) {
+            suggestions.push("Mix uppercase, lowercase, numbers, and symbols.");
+        }
+        if (characteristics.isRepeated) {
+            suggestions.push("Avoid repeating the same character over and over.");
+        }
+        if (characteristics.hasSequence) {
+            suggestions.push("Break up sequences like abc or 123.");
+        }
+        if (characteristics.commonPattern) {
+            suggestions.push("Switch out common words or predictable patterns.");
+        }
+        return { score, base, suggestions };
+    }
+
+    function computeMetrics(password) {
+        const input = password || "";
+        const characteristics = getPasswordCharacteristics(input);
+        const entropy = characteristics.charsetSize > 0 ? Math.round(characteristics.length * Math.log2(Math.max(characteristics.charsetSize, 1))) : 0;
+        const crack = estimateCrackTime(characteristics.length, characteristics.charsetSize);
+        const feedback = evaluateStrength(input, entropy, characteristics);
+        const messageParts = [feedback.base];
+        if (feedback.suggestions.length > 0) {
+            messageParts.push("Try this: " + feedback.suggestions.join(" "));
+        }
+        if (input) {
+            messageParts.push("Estimated crack time: " + crack.text + ".");
+        }
+        return {
+            entropy,
+            score: feedback.score,
+            crackText: crack.text,
+            message: messageParts.join(" ")
+        };
+    }
+
+    function updateMetrics(password) {
+        const metrics = computeMetrics(password);
+        if (password) {
+            resultCode.textContent = password;
+        } else if (!resultCode.textContent) {
+            resultCode.textContent = "forge-me";
+        }
+        strengthLabel.textContent = "Password strength: " + metrics.score + "%";
+        timeLabel.textContent = "Estimated crack time: " + metrics.crackText;
+        guidance.textContent = metrics.message;
+        meterFill.style.width = Math.min(metrics.score, 100) + "%";
+        meterFill.dataset.level = metrics.score;
+    }
+
+    function analyzeInputPassword() {
+        const value = passwordInput ? passwordInput.value : "";
+        updateMetrics(value);
     }
 
     function forge() {
@@ -117,23 +287,17 @@
             password = password.slice(0, position) + symbol + password.slice(position);
         }
 
-        resultCode.textContent = password;
-
-        const entropy = calculateEntropy(count, applyUpper, numberToggle.checked, symbolToggle.checked, applyLeet);
-        const feedback = evaluateStrength(entropy);
-        strengthLabel.textContent = "Strength: " + feedback.score + "%";
-        entropyLabel.textContent = "Entropy: " + entropy + " bits";
-        guidance.textContent = feedback.text;
-
-        meterFill.style.width = Math.min(feedback.score, 100) + "%";
-        meterFill.dataset.level = feedback.score;
+        if (passwordInput) {
+            passwordInput.value = password;
+        }
+        updateMetrics(password);
     }
 
     async function copy() {
         const text = resultCode.textContent;
         try {
             await navigator.clipboard.writeText(text);
-            guidance.textContent = "Copied to clipboard. Deploy wisely.";
+            guidance.textContent = "Copied to your clipboard. Keep it safe.";
         } catch (error) {
             guidance.textContent = "Clipboard blocked. Select and copy manually.";
         }
@@ -141,6 +305,18 @@
 
     generateButton.addEventListener("click", forge);
     copyButton.addEventListener("click", copy);
+    if (analyzeButton) {
+        analyzeButton.addEventListener("click", analyzeInputPassword);
+    }
+    if (passwordInput) {
+        passwordInput.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                analyzeInputPassword();
+            }
+        });
+        passwordInput.addEventListener("input", analyzeInputPassword);
+    }
 
     forge();
 }());
