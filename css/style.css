@@ -455,6 +455,7 @@ body::before {
     display: grid;
     gap: 16px;
     margin-top: 12px;
+    color: var(--text-main);
 }
 
 .button.decision {
@@ -463,10 +464,11 @@ body::before {
     text-align: left;
     padding: 18px 28px;
     border-radius: 16px;
-    background: rgba(20, 0, 50, 0.6);
+    background: rgba(214, 146, 244, 0.6);
     border-color: rgba(187, 0, 244, 0.4);
     font-size: 0.95rem;
     line-height: 1.4;
+    
 }
 
 .button.decision:hover:not(:disabled) {
