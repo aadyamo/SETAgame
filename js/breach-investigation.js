@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 {
                     name: "PDFReader Ultimate",
-                    source: "Downloaded from softwaredownloadz.xyz (unknown third-party site)",
+                    source: "Downloaded from pdfreaderultimate.com (verified third-party site)",
                     isSuspicious: false
                 }
             ],
@@ -141,6 +141,24 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     let currentNode = 'start';
+    let history = [];
+
+    function goToNode(node) {
+        if (node === 'start') {
+            history = [];
+        } else {
+            history.push(currentNode);
+        }
+        currentNode = node;
+        renderScene();
+    }
+
+    function goBack() {
+        if (history.length > 0) {
+            currentNode = history.pop();
+            renderScene();
+        }
+    }
 
     function renderScene() {
         const scene = story[currentNode];
@@ -148,11 +166,19 @@ document.addEventListener('DOMContentLoaded', () => {
         choicesContainerEl.innerHTML = '';
         resultTextEl.innerHTML = '';
 
-        const inboxContainerEl = document.getElementById('inbox-container');
-        const emailsListEl = document.getElementById('emails-list');
+        // Update navigation buttons
+        const backButton = document.getElementById('back-button');
+        backButton.disabled = history.length === 0;
 
+        const inboxContainerEl = document.getElementById('inbox-container');
+        const softwareContainerEl = document.getElementById('software-container');
+
+        // Manage panel visibility
         if (scene.showInbox) {
-            inboxContainerEl.style.display = 'block';
+            storyTextEl.classList.add('hidden');
+            inboxContainerEl.classList.remove('hidden');
+            softwareContainerEl.classList.add('hidden');
+            const emailsListEl = document.getElementById('emails-list');
             emailsListEl.innerHTML = '';
             scene.emails.forEach((email, index) => {
                 const emailDiv = document.createElement('div');
@@ -163,25 +189,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="preview">${email.preview}</div>
                 `;
                 emailDiv.addEventListener('click', () => {
-                    if (email.isPhishing) {
-                        currentNode = 'phishingEnd';
-                    } else {
-                        currentNode = 'emailWrong';
-                    }
-                    inboxContainerEl.style.display = 'none';
-                    renderScene();
+                    const nextNode = email.isPhishing ? 'phishingEnd' : 'emailWrong';
+                    goToNode(nextNode);
                 });
                 emailsListEl.appendChild(emailDiv);
             });
-        } else {
-            inboxContainerEl.style.display = 'none';
-        }
-
-        const softwareContainerEl = document.getElementById('software-container');
-        const softwareListEl = document.getElementById('software-list');
-
-        if (scene.showSoftwareList) {
-            softwareContainerEl.style.display = 'block';
+        } else if (scene.showSoftwareList) {
+            storyTextEl.classList.add('hidden');
+            inboxContainerEl.classList.add('hidden');
+            softwareContainerEl.classList.remove('hidden');
+            const softwareListEl = document.getElementById('software-list');
             softwareListEl.innerHTML = '';
             scene.softwares.forEach((software, index) => {
                 const softwareDiv = document.createElement('div');
@@ -191,18 +208,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="source">${software.source}</div>
                 `;
                 softwareDiv.addEventListener('click', () => {
-                    if (software.isSuspicious) {
-                        currentNode = 'softwareEnd';
-                    } else {
-                        currentNode = 'softwareWrong';
-                    }
-                    softwareContainerEl.style.display = 'none';
-                    renderScene();
+                    const nextNode = software.isSuspicious ? 'softwareEnd' : 'softwareWrong';
+                    goToNode(nextNode);
                 });
                 softwareListEl.appendChild(softwareDiv);
             });
         } else {
-            softwareContainerEl.style.display = 'none';
+            storyTextEl.classList.remove('hidden');
+            inboxContainerEl.classList.add('hidden');
+            softwareContainerEl.classList.add('hidden');
         }
 
         scene.choices.forEach(choice => {
@@ -224,12 +238,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     inventory = [];
                 }
 
-                currentNode = choice.nextNode;
-                renderScene();
+                goToNode(choice.nextNode);
             });
             choicesContainerEl.appendChild(button);
         });
     }
+
+    // Add event listeners for navigation buttons
+    document.getElementById('back-button').addEventListener('click', goBack);
 
     renderScene();
 });

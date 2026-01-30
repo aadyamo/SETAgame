@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/breach-investigation.css">
 </head>
-<body class="breach-investigation-page">
+<body class="game-page breach-investigation">
     <div class="noise-overlay" aria-hidden="true"></div>
     <div class="binary-overlay" aria-hidden="true"></div>
 
@@ -23,27 +23,39 @@
         </nav>
     </header>
 
-    <main id="game-container" class="game-container" role="main">
-        <div id="story-text" class="story-text">
-            <p>You wake up one morning to a notification from your bank: "Your account balance is $0.00". A sense of dread washes over you. All your money is gone. You must have been the victim of a cyberattack. Now you need to trace back your steps to figure out what went wrong.</p>
-            <p>Which of these actions did you take recently?</p>
-        </div>
-        <div id="inbox-container" class="inbox-container" style="display: none;">
-            <h3>Your Inbox</h3>
-            <div id="emails-list" class="emails-list">
-                <!-- Emails will be dynamically inserted here -->
+    <main class="game-main" role="main">
+        <section class="mission-shell">
+            <header class="mission-briefing">
+                <h1>Breach Investigation</h1>
+                <p>Trace back your steps to figure out what went wrong after a cyberattack drained your bank account.</p>
+            </header>
+
+            <div class="mission-console">
+                <nav class="game-nav">
+                    <button id="back-button" class="nav-button" disabled>Back</button>
+                </nav>
+                <div id="story-text" class="mission-panel">
+                    <p>You wake up one morning to a notification from your bank: "Your account balance is $0.00". A sense of dread washes over you. All your money is gone. You must have been the victim of a cyberattack. Now you need to trace back your steps to figure out what went wrong.</p>
+                    <p>Which of these actions did you take recently?</p>
+                </div>
+                <div id="inbox-container" class="mission-panel hidden">
+                    <h3>Your Inbox</h3>
+                    <div id="emails-list" class="emails-list">
+                        <!-- Emails will be dynamically inserted here -->
+                    </div>
+                </div>
+                <div id="software-container" class="mission-panel hidden">
+                    <h3>Recently Downloaded Software</h3>
+                    <div id="software-list" class="software-list">
+                        <!-- Software will be dynamically inserted here -->
+                    </div>
+                </div>
+                <div id="choices-container" class="choices-container">
+                    <!-- Choices will be dynamically inserted here -->
+                </div>
+                <div id="result-text" class="result-text"></div>
             </div>
-        </div>
-        <div id="software-container" class="software-container" style="display: none;">
-            <h3>Recently Downloaded Software</h3>
-            <div id="software-list" class="software-list">
-                <!-- Software will be dynamically inserted here -->
-            </div>
-        </div>
-        <div id="choices-container" class="choices-container">
-            <!-- Choices will be dynamically inserted here -->
-        </div>
-        <div id="result-text" class="result-text"></div>
+        </section>
     </main>
 
     <footer class="site-footer">
