@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breach Investigation - CyberQuest SETA</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/breach-investigation.css">
+</head>
+<body class="breach-investigation-page">
+    <div class="noise-overlay" aria-hidden="true"></div>
+    <div class="binary-overlay" aria-hidden="true"></div>
+
+    <header class="site-header">
+        <div class="brand">
+            <div class="brand-icon" aria-hidden="true">
+                <img src="../pixil-frame-0.png" alt="CyberQuest shield logo">
+            </div>
+            <span class="brand-name">CyberQuest SETA</span>
+        </div>
+        <nav class="actions">
+            <a class="button ghost" href="map.html">Return to Map</a>
+        </nav>
+    </header>
+
+    <main id="game-container" class="game-container" role="main">
+        <div id="story-text" class="story-text">
+            <p>You wake up one morning to a notification from your bank: "Your account balance is $0.00". A sense of dread washes over you. All your money is gone. You must have been the victim of a cyberattack. Now you need to trace back your steps to figure out what went wrong.</p>
+            <p>Which of these actions did you take recently?</p>
+        </div>
+        <div id="choices-container" class="choices-container">
+            <!-- Choices will be dynamically inserted here -->
+        </div>
+        <div id="result-text" class="result-text"></div>
+    </main>
+
+    <footer class="site-footer">
+        <small>2024 CyberQuest Atlas. All rights reserved.</small>
+    </footer>
+
+    <script src="../js/breach-investigation.js"></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+.breach-investigation-page .game-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--primary-glow);
+    box-shadow: 0 0 15px var(--primary-glow);
+    color: var(--light-text);
+    font-family: 'Space Mono', monospace;
+}
+
+.story-text p {
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.choices-container .choice-button {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: 1px solid var(--button-border);
+    text-align: left;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.choices-container .choice-button:hover {
+    background-color: var(--button-hover-bg);
+    box-shadow: 0 0 10px var(--primary-glow);
+}
+
+.result-text {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border: 1px dashed var(--light-text);
+    line-height: 1.7;
+}
+
+.result-text .correct {
+    color: #00ff00; /* A bright green for correct answers */
+    font-weight: bold;
+}
+
+.result-text .incorrect {
+    color: #ff0000; /* A bright red for incorrect answers */
+    font-weight: bold;
+}
