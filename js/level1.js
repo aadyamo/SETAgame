@@ -39,6 +39,14 @@
                 { text: "Privately capture the evidence and alert security.", correct: true, rationale: "Documenting the leak and reporting enables a formal response." },
                 { text: "Publicly comment asking for the post to be removed.", correct: false, rationale: "Public responses can amplify the leak and reveal actual details." }
             ]
+        },
+        {
+            prompt: "You get a call from an unknown number claiming to be your boss. The caller sounds like your boss and is asking you for your bank details for because of an issue with your details in the database?",
+            options: [
+                { text: "Provide the requested information to avoid any issues.", correct: false, rationale: "Never provide sensitive information over the phone without verifying the caller's identity." },
+                { text: "Hang up and call your boss directly to verify the request.", correct: true, rationale: "Verifying identity through a known contact is essential for security." },
+                { text: "Ask for more details about the issue and then provide information.", correct: false, rationale: "Providing sensitive information without verification is risky." }
+            ]
         }
     ];
 
